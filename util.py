@@ -48,7 +48,6 @@ def send_message(target, message, duplicate=False, times=1):
 
 def pyq_like(total_number):
     pyq_button_location = pyautogui.locateCenterOnScreen('./image/pyq.png')
-    print(pyq_button_location)
 
     if pyq_button_location is None:
         open_wechat()
