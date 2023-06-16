@@ -2,8 +2,9 @@ import pyautogui
 from time import sleep
 import pyperclip
 
-sleep_time = 0.3
-duration = 0.5
+sleep_time_open = 0.1
+sleep_time_scroll = 0.4
+duration = 0.2
 scroll = -250
 
 
@@ -11,11 +12,11 @@ def open_wechat():
     # 找到并打开托盘
     up_button_location = pyautogui.locateCenterOnScreen('./image/up_button.png')
     pyautogui.click(up_button_location)
-    sleep(sleep_time)
+    sleep(sleep_time_open)
     # 点击微信
     wechat_button_location = pyautogui.locateCenterOnScreen('./image/wechat_button.png')
     pyautogui.click(wechat_button_location)
-    sleep(sleep_time)
+    sleep(sleep_time_open)
 
 
 def send_message(target, message, duplicate=False, times=1):
@@ -24,11 +25,11 @@ def send_message(target, message, duplicate=False, times=1):
     # 点击搜索
     search_button_location = pyautogui.locateCenterOnScreen('./image/search_button.png')
     pyautogui.click(search_button_location)
-    sleep(sleep_time)
+    sleep(sleep_time_open)
     # 输入目标联系人
     pyperclip.copy(target)  # 聊天的内容
     pyautogui.hotkey('ctrl', 'v')
-    sleep(sleep_time + 0.5)
+    sleep(sleep_time_open + 0.5)
     # 点击下方第一个联系人
     pyautogui.move(0, 60)
     pyautogui.click()
@@ -51,7 +52,7 @@ def pyq_like(total_number):
 
     if pyq_button_location is None:
         open_wechat()
-        sleep(sleep_time)
+        sleep(sleep_time_open)
         pyq_button_location = pyautogui.locateCenterOnScreen('./image/pyq.png')
         pyautogui.click(pyq_button_location)
     else:
@@ -64,33 +65,27 @@ def pyq_like(total_number):
     more_button_location_old = 0
     more_button_location_new = pyautogui.locateCenterOnScreen('./image/more.png')
     while total_number > 0:
-        print("-"*100)
-        print("“展开”按钮旧坐标：" + str(more_button_location_old))
-        print("“展开”按钮新坐标：" + str(more_button_location_new))
         if more_button_location_new is None or more_button_location_old == more_button_location_new:
             pyautogui.scroll(scroll)
-            sleep(sleep_time)
+            sleep(sleep_time_scroll)
             more_button_location_new = pyautogui.locateCenterOnScreen('./image/more.png')
-            print("更改新坐标为" + str(more_button_location_new))
         elif more_button_location_old != more_button_location_new:
             # 点赞
             pyautogui.moveTo(more_button_location_new, duration=duration)
-            sleep(sleep_time)
+            sleep(sleep_time_open)
             pyautogui.click()
-            print("点击“展开”按钮")
-            sleep(sleep_time + 0.5)
+            sleep(sleep_time_open)
             like_button_location = pyautogui.locateCenterOnScreen('./image/like.png')
             if like_button_location is None:
                 pyautogui.scroll(scroll)
-                sleep(sleep_time)
+                sleep(sleep_time_scroll)
                 more_button_location_new = pyautogui.locateCenterOnScreen('./image/more.png')
                 continue
-            sleep(sleep_time + 0.5)
+            sleep(sleep_time_open)
             pyautogui.moveTo(like_button_location, duration=duration)
-            sleep(sleep_time + 0.5)
+            sleep(sleep_time_open)
             pyautogui.click()
-            print("点击“点赞”按钮")
-            sleep(sleep_time + 0.5)
+            sleep(sleep_time_open)
             total_number -= 1
             pyautogui.scroll(scroll)
             more_button_location_old = more_button_location_new
